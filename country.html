@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Detalles del país - GLOBUS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <h1 class="logo">GLOBUS</h1>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="countries.html">Países</a></li>
+        <li><a href="recommender.html">Recomendador</a></li>
+        <li><a href="about.html">Sobre nosotros</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div id="country-details" class="country-details">
+      <!-- Se carga contenido dinámico -->
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 GLOBUS - Viajes sin tours ni reservas</p>
+  </footer>
+
+  <script src="data/countries.js"></script>
+  <script>
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    const code = getQueryParam('code');
+    const country = countries.find(c => c.code === code);
+
+    const detailsDiv = document.getElementById('country-details');
+
+    if (!country) {
+      detailsDiv.innerHTML = '<p>País no encontrado.</p>';
+    } else {
+      // Para cada país puedes añadir detalles adicionales (clima, cultura, etc)
+      // Aquí dejo un ejemplo para España, para los demás puedes añadir datos o cargar de API
+      let detailsHtml = `
+        <h2>${country.name}</h2>
+        <img src="https://flagcdn.com/w320/${country.code.toLowerCase()}.png" alt="Bandera de ${country.name}" />
+        <p>Bienvenido a ${country.name}. Aquí puedes añadir información detallada sobre el país, sus tradiciones, clima, turismo y más.</p>
+      `;
+
+      if (country.code === "ES") {
+        detailsHtml += `
+          <h3>Datos de España</h3>
+          <ul>
+            <li>Capital: Madrid</li>
+            <li>Población: 47 millones aprox.</li>
+            <li>Idioma oficial: Español</li>
+            <li>Moneda: Euro (€)</li>
+            <li>Clima: Mediterráneo</li>
+          </ul>
+          <p>España es conocida por su rica cultura, gastronomía y paisajes diversos.</p>
+        `;
+      }
+
+      detailsDiv.innerHTML = detailsHtml;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Países - GLOBUS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <h1 class="logo">GLOBUS</h1>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="countries.html">Países</a></li>
+        <li><a href="recommender.html">Recomendador</a></li>
+        <li><a href="about.html">Sobre nosotros</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Países reconocidos por la ONU</h2>
+
+    <div id="countries-list" class="countries-grid"></div>
+  </main>
+
+  <footer>
+    <p>© 2025 GLOBUS - Viajes sin tours ni reservas</p>
+  </footer>
+
+  <script src="data/countries.js"></script>
+  <script>
+    const countriesList = document.getElementById('countries-list');
+
+    countries.forEach(country => {
+      // Imagen placeholder, luego puedes añadir imágenes por código ISO o nombre
+      const imgSrc = `https://flagcdn.com/w160/${country.code.toLowerCase()}.png`;
+
+      const countryCard = document.createElement('article');
+      countryCard.className = 'country-card';
+
+      countryCard.innerHTML = `
+        <img src="${imgSrc}" alt="Bandera de ${country.name}" loading="lazy"/>
+        <h3>${country.name}</h3>
+        <a href="country.html?code=${country.code}" class="btn">Ver detalles</a>
+        <button class="fav-btn" data-code="${country.code}">❤</button>
+      `;
+
+      countriesList.appendChild(countryCard);
+    });
+
+    // Funcionalidad para favoritos simple con localStorage
+    document.querySelectorAll('.fav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const code = btn.dataset.code;
+        let favs = JSON.parse(localStorage.getItem('globusFavorites')) || [];
+        if (favs.includes(code)) {
+          favs = favs.filter(c => c !== code);
+          btn.classList.remove('favorito');
+        } else {
+          favs.push(code);
+          btn.classList.add('favorito');
+        }
+        localStorage.setItem('globusFavorites', JSON.stringify(favs));
+      });
+
+      // Marcar favoritos al cargar
+      let favs = JSON.parse(localStorage.getItem('globusFavorites')) || [];
+      if (favs.includes(btn.dataset.code)) {
+        btn.classList.add('favorito');
+      }
+    });
+  </script>
+</body>
+</html>
